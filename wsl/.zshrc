@@ -107,10 +107,14 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# Proxy config (uncomment if needed)
-# export https_proxy=http://127.0.0.1:7890
-# export http_proxy=http://127.0.0.1:7890
-# export all_proxy=socks5://127.0.0.1:7890
+# Proxy config (WSL2 - use Windows host IP)
+# WSL2 NAT mode can't access 127.0.0.1, need to use host IP from resolv.conf
+export WINDOWS_HOST_IP=$(grep -m 1 nameserver /etc/resolv.conf | awk '{print $2}')
+export https_proxy=http://${WINDOWS_HOST_IP}:7890
+export http_proxy=http://${WINDOWS_HOST_IP}:7890
+export all_proxy=socks5://${WINDOWS_HOST_IP}:7890
+export no_proxy=localhost,127.0.0.1,::1
+export NO_PROXY=localhost,127.0.0.1,::1
 
 # Rust/Cargo
 [[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
